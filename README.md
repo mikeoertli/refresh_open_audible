@@ -26,3 +26,14 @@ Make sure to add execute permissions to the script:
 chmod +x ./refresh_open_audible.sh
 ```
 
+Create an iOS shortcut that uses "Run Script over SSH" and then give it the script path.
+
+It supports execution of another script after the library sync is complete too, for example:
+
+```sh
+/usr/local/bin/refresh_open_audible.sh /usr/local/bin/and_then_do_this.sh 2>&1
+```
+
+Ideally, the output of that shortcut step is given to a "QuickLook" step so you can see the output.
+
+Note that this iOS Shortcut step will only show `stdout`, thus the use of `2>&1`.
