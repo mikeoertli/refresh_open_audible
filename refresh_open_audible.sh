@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
 # refresh_openaudible.sh — launch, sync, wait, then quit
 
-open -a RefreshOpenAudible
+# The -W waits for it to complete since an optional script can be called as an argument to this one.
+# Preserves the exit code from the refresh script
+open -W -a RefreshOpenAudible || exit $?
+
+if [[ $# -eq 1 ]]; then
+  SCRIPT="$1"
+  if [[ -x $SCRIPT ]]; then
+    bash "${SCRIPT}"
+    echo >&2 "SUCCESS! Update is complete."
+  else
+    echo >&2  "ERROR: The given script is not found or is not executable: ${SCRIPT}"
+  fi
+else
+  echo >&2 "Library refresh is complete, no additional script is being run."
+fi
 
 # This was the plan, but macOS limits the ability to control other applications and
 # the permission prompt was not appearing. Even adding permissions manually didn't seem
